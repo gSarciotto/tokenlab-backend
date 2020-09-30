@@ -127,6 +127,9 @@ test("PUT /events should return Not Found (404) if userId encoded in jwt is not 
 describe("PUT /events should", () => {
     const server = fastify();
     const updateEventDatabase = new MockedUpdateEventDatabase();
+    updateEventDatabase.getOtherEventsWithSameOwner = jest.fn(() =>
+        Promise.resolve([])
+    );
     const authorizationDatabase = new MockedAuthorizationDatabase();
     authorizationDatabase.checkIfUserIdIsRegistered = jest.fn(() =>
         Promise.resolve(true)
