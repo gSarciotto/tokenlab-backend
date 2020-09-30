@@ -27,7 +27,7 @@ if (!secret) {
 const uuid = new Uuid();
 const bcrypt = new Bcrypt();
 const jwt = new Jwt(secret);
-const database = new Database(process.env.DB_CONNECTION);
+const database = new Database(process.env.DATABASE_URL);
 const createUserDatabase = new CreateUserDatabase(database, uuid);
 const loginDatabase = new LoginDatabase(database);
 const createEventDatabase = new CreateEventDatabase(database, uuid);
