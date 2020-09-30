@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "build/index.js",
+  "engines": {
+    "node": "12.18.4",
+    "npm": "6.14.6"
+  },
   "scripts": {
     "start": "ts-node-dev --clear --rs -- src/index.ts",
     "start:debug": "ts-node-dev --debug --rs -- src/index.ts",
@@ -11,6 +15,7 @@
     "test:watch": "jest --watch -i src",
     "test:debug": "jest --debug -i src"
   },
+  "heroku-run-build-script": true,
   "keywords": [],
   "author": "",
   "license": "ISC",
