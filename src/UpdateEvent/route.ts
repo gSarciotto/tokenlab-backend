@@ -82,7 +82,8 @@ export const createUpdateEventRoute = ({
         }
         try {
             const otherEventsWithSameOwner = await updateEventDatabase.getOtherEventsWithSameOwner(
-                decodedToken.userId
+                decodedToken.userId,
+                convertedBody.id
             );
             if (
                 doesEventOverlaps(

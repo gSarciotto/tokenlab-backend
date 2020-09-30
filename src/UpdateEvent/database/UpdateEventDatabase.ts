@@ -14,7 +14,10 @@ export interface IUpdateEventDatabase {
         eventInformation: ConvertedUpdateEventBody,
         creatorId: string
     ) => Promise<void>;
-    getOtherEventsWithSameOwner: (ownerId: string) => Promise<Event[]>;
+    getOtherEventsWithSameOwner: (
+        ownerId: string,
+        eventId: string
+    ) => Promise<Event[]>;
 }
 
 const dateParam = (
@@ -47,11 +50,14 @@ export class UpdateEventDatabase implements IUpdateEventDatabase {
             }
         }
     }
-    async getOtherEventsWithSameOwner(ownerId: string): Promise<Event[]> {
+    async getOtherEventsWithSameOwner(
+        ownerId: string,
+        eventId: string
+    ): Promise<Event[]> {
         let queryResult: EventModel[];
         try {
             queryResult = await this.database.pool.many(
-                sql`SELECT * FROM events WHERE creator_id=${ownerId}`
+                sql`SELECT * FROM events WHERE creator_id=${ownerId} AND id!=${eventId}`
             );
         } catch (err) {
             if (err instanceof NotFoundError) {
