@@ -3,10 +3,10 @@ import { Event } from "../sharedResources";
 import {
     getTokenPayloadFromAuthorizationHeader,
     IAuthorizationDatabase,
-    IJwt
+    IJwt,
+    doesEventOverlaps
 } from "../utils";
 import { ICreateEventDatabase } from "./database/CreateEventDatabase";
-import { doesEventOverlaps } from "./utils";
 
 export type CreateEventBody = Pick<Event, "begin" | "end" | "description">;
 

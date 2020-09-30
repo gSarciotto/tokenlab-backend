@@ -17,3 +17,5 @@ export {
 } from "./authorization/AuthorizationDatabase";
 
 export { convertEventModelToEvent } from "./converters/EventModelToEvent";
+
+export { doesEventOverlaps } from "./EventOverlap";

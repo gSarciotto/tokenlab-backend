@@ -4,7 +4,8 @@ import {
     getTokenPayloadFromAuthorizationHeader,
     IJwt,
     IAuthorizationDatabase,
-    IUuid
+    IUuid,
+    doesEventOverlaps
 } from "../utils";
 import { NotFound } from "./database/errors";
 import { IUpdateEventDatabase } from "./database/UpdateEventDatabase";
@@ -80,6 +81,18 @@ export const createUpdateEventRoute = ({
             return;
         }
         try {
+            const otherEventsWithSameOwner = await updateEventDatabase.getOtherEventsWithSameOwner(
+                decodedToken.userId
+            );
+            if (
+                doesEventOverlaps(
+                    { ...convertedBody, creatorId: decodedToken.userId },
+                    otherEventsWithSameOwner
+                )
+            ) {
+                await reply.status(409).send();
+                return;
+            }
             await updateEventDatabase.updateEvent(
                 convertedBody,
                 decodedToken.userId

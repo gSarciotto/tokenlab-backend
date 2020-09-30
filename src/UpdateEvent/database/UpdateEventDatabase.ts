@@ -4,15 +4,17 @@ import {
     QueryResultRowType,
     NotFoundError
 } from "slonik";
-import { IDatabase } from "../../utils";
+import { IDatabase, convertEventModelToEvent } from "../../utils";
 import { ConvertedUpdateEventBody } from "../route";
 import { NotFound } from "./errors";
+import { Event, EventModel } from "../../sharedResources";
 
 export interface IUpdateEventDatabase {
     updateEvent: (
         eventInformation: ConvertedUpdateEventBody,
         creatorId: string
     ) => Promise<void>;
+    getOtherEventsWithSameOwner: (ownerId: string) => Promise<Event[]>;
 }
 
 const dateParam = (
@@ -44,5 +46,23 @@ export class UpdateEventDatabase implements IUpdateEventDatabase {
                 throw err;
             }
         }
+    }
+    async getOtherEventsWithSameOwner(ownerId: string): Promise<Event[]> {
+        let queryResult: EventModel[];
+        try {
+            queryResult = await this.database.pool.many(
+                sql`SELECT * FROM events WHERE creator_id=${ownerId}`
+            );
+        } catch (err) {
+            if (err instanceof NotFoundError) {
+                queryResult = [];
+            } else {
+                throw err;
+            }
+        }
+        const convertedResult: Event[] = queryResult.map(
+            convertEventModelToEvent
+        );
+        return convertedResult;
     }
 }
