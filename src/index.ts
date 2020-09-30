@@ -18,6 +18,7 @@ void server.register(fastifyCors, {
     origin: true
 });
 
+const port = Number(process.env.PORT) || 5000;
 const secret = process.env.JWT_SECRET;
 if (!secret) {
     console.log("No JWT secret defined.");
@@ -60,7 +61,7 @@ server.route(
     })
 );
 
-server.listen(3000, function (err, address) {
+server.listen(port, function (err, address) {
     if (err) {
         console.log(err);
         process.exit(1);
