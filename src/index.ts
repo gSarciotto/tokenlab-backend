@@ -15,7 +15,8 @@ config();
 const server = fastify();
 addRouteSharedSchemas(server);
 void server.register(fastifyCors, {
-    origin: true
+    origin: true,
+    methods: ["GET", "PUT", "POST", "DELETE"]
 });
 
 const port = Number(process.env.PORT) || 5000;
